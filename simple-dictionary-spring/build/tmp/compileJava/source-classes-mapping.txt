@@ -1,0 +1,4 @@
+com/codegym/controller/TranslateController.java
+ com.codegym.controller.TranslateController
+com/codegym/model/Dictionary.java
+ com.codegym.model.Dictionary
