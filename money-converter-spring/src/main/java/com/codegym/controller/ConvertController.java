@@ -13,6 +13,7 @@ public class ConvertController {
     }
 
 
+
     @PostMapping("/")
     public ModelAndView convert(@RequestParam(required = false, name = "usd") String usd){
         ModelAndView mav = new ModelAndView("index");
