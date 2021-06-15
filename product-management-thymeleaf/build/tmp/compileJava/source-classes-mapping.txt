@@ -1,11 +1,11 @@
 com/codegym/model/Product.java
  com.codegym.model.Product
-com/codegym/configuration/AppConfig.java
- com.codegym.configuration.AppConfig
-com/codegym/service/IProductService.java
- com.codegym.service.IProductService
 com/codegym/configuration/AppInit.java
  com.codegym.configuration.AppInit
+com/codegym/service/IProductService.java
+ com.codegym.service.IProductService
+com/codegym/configuration/AppConfig.java
+ com.codegym.configuration.AppConfig
 com/codegym/service/ProductService.java
  com.codegym.service.ProductService
 com/codegym/controller/ProductController.java

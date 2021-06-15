@@ -4,6 +4,7 @@ import com.codegym.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ProductService implements IProductService{
     private static List<Product> products;
@@ -59,10 +60,15 @@ public class ProductService implements IProductService{
         return false;
     }
 
+
     @Override
     public List<Product> findByName(String name) {
-        return null;
+        List<Product> found = new ArrayList<>();
+        for (Product product: products){
+            if (product.getName().toLowerCase().contains(name.trim().toLowerCase())){
+                found.add(product);
+            }
+        }
+        return found;
     }
-
-
 }

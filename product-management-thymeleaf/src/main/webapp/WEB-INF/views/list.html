@@ -8,7 +8,10 @@
         Add new product
     </a>
 </p>
-
+<form id = "search-bar" th:action="@{/product}" method="get">
+    <input type="text" name = "search" placeholder="Enter a name">
+    <input type="submit" value="Search">
+</form>
 <table id = "products">
     <thead>
     <tr>
@@ -34,7 +37,7 @@
     </tbody>
 </table>
 <div class = "notify" align="center">
-    <p th:if = "${message}" style="font-size: 16px">
+    <p th:if = "${message}">
         <span th:text="${message}"></span>
     </p>
 </div>
