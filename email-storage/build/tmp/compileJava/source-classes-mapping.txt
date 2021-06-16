@@ -1,0 +1,8 @@
+com/codegym/configuration/AppInit.java
+ com.codegym.configuration.AppInit
+com/codegym/configuration/AppConfig.java
+ com.codegym.configuration.AppConfig
+com/codegym/model/Email.java
+ com.codegym.model.Email
+com/codegym/controller/EmailController.java
+ com.codegym.controller.EmailController
