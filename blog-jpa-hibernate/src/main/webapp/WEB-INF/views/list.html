@@ -22,7 +22,7 @@
             <tr>
                 <td th:text="${blog.id}"></td>
                 <td th:text="${blog.author}"></td>
-                <td th:text="${blog.content}"></td>
+                <td><a th:href="@{/view/__${blog.id}__}" th:text="${blog.content}"></a></td>
                 <td><a th:href="@{/edit/__${blog.id}__ }">Edit</a></td>
                 <td><a th:href="@{/delete/__${blog.id}__ }">Delete</a></td>
             </tr>

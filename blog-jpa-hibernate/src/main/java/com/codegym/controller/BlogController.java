@@ -83,4 +83,12 @@ public class BlogController {
         redirectAttributes.addFlashAttribute("message", "One blog was deleted");
         return "redirect:/";
     }
+
+
+    @GetMapping("/view/{id}")
+    public ModelAndView showEach(@PathVariable("id") Long id){
+        Blog blog = blogService.findById(id);
+        ModelAndView mav = new ModelAndView("view", "blog", blog);
+        return mav;
+    }
 }
