@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    Search by Author:
+    <input name="search" type="text"/>
+    <input type="submit" value="Search"/>
+</form>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Content</th>
+    </tr>
+    <th:block th:each="blog: ${blogs}">
+        <tr>
+            <td th:text="${blog.id}"></td>
+            <td th:text="${blog.author}"></td>
+            <td th:text="${blog.category.name}"></td>
+            <td><a th:href="@{/blog/view/__${blog.id}__}" th:text="${blog.content}"></a></td>
+            <td><a th:href="@{/blog/edit/__${blog.id}__ }">Edit</a></td>
+            <td><a th:href="@{/blog/delete/__${blog.id}__ }">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+<br/>
+<a th:href="@{/blog}">Back</a>
+<br/>
+<a th:href="@{/category}">To Category List</a>
+</body>
+</html>
