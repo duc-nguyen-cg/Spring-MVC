@@ -10,7 +10,10 @@ public class Customer implements Cloneable {
     private Long id;
 
     private String name;
+
+    @Column(unique = true, columnDefinition = "varchar(50)")
     private String email;
+
     private String address;
 
     @ManyToOne
