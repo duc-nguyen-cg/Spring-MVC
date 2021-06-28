@@ -27,23 +27,38 @@
     </table>
 </form>
 
+<div>
+    <form>
+        <input type="text" placeholder="Search By Producer" id="search">
+        <input type="submit" value = "Search" onclick="searchByProducer()">
+    </form>
+</div>
+
 <h1>Smartphone List</h1>
 <table id="smartphoneList">
     <tr>
-        <td>Producer</td>
-        <td>Model</td>
-        <td>Price</td>
-        <td>Delete</td>
+        <th>Producer</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     <th:block th:each="smartphone: ${smartphones}">
         <tr>
             <td th:text="${smartphone.producer}"></td>
             <td th:text="${smartphone.model}"></td>
             <td th:text="${smartphone.price}"></td>
+            <td><a class="editSmartphone" th:href="${smartphone.getId()}">Edit</a></td>
             <td><a class="deleteSmartphone" th:href="${smartphone.getId()}">Delete</a></td>
         </tr>
     </th:block>
 </table>
+
+<!--<div id="turnpage">-->
+<!--    <a class="previous" th:href="${smartphones.number - 1}" th:if="${smartphones.hasPrevious()}">Previous</a>-->
+<!--    <span th:text="${smartphones.number + 1}"></span>/<span th:text="${smartphones.totalPages}"></span>-->
+<!--    <a class="next" th:href="${smartphones.number + 1}" th:if="${smartphones.hasNext()}">Next</a>-->
+<!--</div>-->
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type = "text/javascript">
@@ -74,19 +89,47 @@
         event.preventDefault();
     }
 
+
+    function searchByProducer(){
+        let searchWord = document.getElementById("search").value;
+        $.ajax({
+            //tên phương thức
+            type: "GET",
+            //tên API
+            url: `/smartphones?search=${searchWord}`,
+            success: function (data) {
+                // hiển thị danh sách ở đây
+                let content = '    <tr>\n' +
+                    '        <th>Producer</th>\n' +
+                    '        <th>Model</th>\n' +
+                    '        <th>Price</th>\n' +
+                    '        <th>Edit</th>\n' +
+                    '        <th>Delete</th>\n' +
+                    '    </tr>';
+                for (let i = 0; i < data.length; i++) {
+                    content += getSmartphone(data[i])
+                }
+                document.getElementById('smartphoneList').innerHTML = content;
+            }
+        });
+        event.preventDefault();
+    }
+
+
     function successHandler() {
         $.ajax({
             type: "GET",
             //tên API
-            url: "/smartphones",
+            url: `/smartphones`,
             //xử lý khi thành công
             success: function (data) {
                 // hiển thị danh sách ở đây
                 let content = '    <tr>\n' +
-                    '        <td>Producer</td>\n' +
-                    '        <td>Model</td>\n' +
-                    '        <td>Price</td>\n' +
-                    '        <td>Delete</td>\n' +
+                    '        <th>Producer</th>\n' +
+                    '        <th>Model</th>\n' +
+                    '        <th>Price</th>\n' +
+                    '        <th>Edit</th>\n' +
+                    '        <th>Delete</th>\n' +
                     '    </tr>';
                 for (let i = 0; i < data.length; i++) {
                     content += getSmartphone(data[i])
@@ -96,10 +139,13 @@
         });
     }
 
+
     function getSmartphone(smartphone) {
         return `<tr><td >${smartphone.producer}</td><td >${smartphone.model}</td><td >${smartphone.price}</td>` +
+            `<td><a class="editSmartphone" href="${smartphone.id}">Edit</a></td>` +
             `<td><a class="deleteSmartphone" href="${smartphone.id}">Delete</a></td></tr>`;
     }
+
 
     $(document).ready(function () {
         //sư kiện nào thực hiện Ajax
