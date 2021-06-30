@@ -1019,6 +1019,7 @@ SELECT|sys.sys_config
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
     </column>
     <column id="313" parent="300" name="model">
       <Position>2</Position>

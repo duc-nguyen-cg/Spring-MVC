@@ -1,154 +1,134 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>List Smartphone</title>
-
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <title th:text="#{title}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<form id="add-smartphone">
-    <table>
-        <tr>
-            <td>Producer:</td>
-            <td><input type="text" id="producer" placeholder="producer"></td>
-        </tr>
-        <tr>
-            <td>Model:</td>
-            <td><input type="text" id="model" placeholder="model"></td>
-        </tr>
-        <tr>
-            <td>Price:</td>
-            <td><input type="text" id="price" placeholder="price"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Add" onclick="addNewSmartPhone()"></td>
-        </tr>
-    </table>
-</form>
+
+<span th:text="#{language.title}"></span>: <a href="?lang=en"><span th:text="#{language.en}"></span></a> | <a href="?lang=vi"><span th:text="#{language.vi}"></span></a>
+<br/><br/>
+
+<!-- Button trigger create modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal"
+        data-bs-target="#createModal" th:text="#{button.add}">
+</button>
+<br/><br/>
 
 <div>
-    <form>
-        <input type="text" placeholder="Search By Producer" id="search">
-        <input type="submit" value = "Search" onclick="searchByProducer()">
-    </form>
+        <input type="text" th:placeholder="#{placeholder.search}" id="search_word">
+        <button id= "search_form" type="button" th:text="#{button.search}"></button>
 </div>
+<br/>
 
-<h1>Smartphone List</h1>
-<table id="smartphoneList">
+<h1 th:text="#{title}"></h1>
+<table id="smartphoneList" cellpadding="10" style="text-align: center">
     <tr>
-        <th>Producer</th>
-        <th>Model</th>
-        <th>Price</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th th:text="#{label.producer}"></th>
+        <th th:text="#{label.model}">Model</th>
+        <th th:text="#{label.price}">Price</th>
+        <th th:text="#{button.edit}"></th>
+        <th th:text="#{button.delete}"></th>
     </tr>
     <th:block th:each="smartphone: ${smartphones}">
         <tr>
             <td th:text="${smartphone.producer}"></td>
             <td th:text="${smartphone.model}"></td>
             <td th:text="${smartphone.price}"></td>
-            <td><a class="editSmartphone" th:href="${smartphone.getId()}">Edit</a></td>
-            <td><a class="deleteSmartphone" th:href="${smartphone.getId()}">Delete</a></td>
+            <td>
+                <!-- Button trigger edit modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+                        th:attr="data-smartphone-id=''+${smartphone.getId()}+''" th:text="#{button.edit}">
+                </button>
+            </td>
+            <td><a class="deleteSmartphone btn btn-danger"  th:href="''+${smartphone.id}+''" th:text="#{button.delete}"></a></td>
         </tr>
     </th:block>
 </table>
 
-<!--<div id="turnpage">-->
-<!--    <a class="previous" th:href="${smartphones.number - 1}" th:if="${smartphones.hasPrevious()}">Previous</a>-->
-<!--    <span th:text="${smartphones.number + 1}"></span>/<span th:text="${smartphones.totalPages}"></span>-->
-<!--    <a class="next" th:href="${smartphones.number + 1}" th:if="${smartphones.hasNext()}">Next</a>-->
-<!--</div>-->
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!--Create Modal-->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel" th:text="#{form.add.label}"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table cellpadding="10">
+                        <tr>
+                            <td th:text="#{label.producer}"></td>
+                            <td><input type="text" id="producer" th:placeholder="#{placeholder.producer}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{label.model}"></td>
+                            <td><input type="text" id="model" th:placeholder="#{placeholder.model}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{label.price}"></td>
+                            <td><input type="text" id="price" th:placeholder="#{placeholder.price}"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{form.add.close}">Close</button>
+                <button type="button" class="btn btn-success" id="create_button" th:text="#{form.add.submit}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Edit Modal-->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" th:text="#{form.edit.label}">Edit Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <table cellpadding="10">
+                        <input hidden type="text" id="id_edit">
+                        <tr>
+                            <td th:text="#{label.producer}"></td>
+                            <td><input type="text" id="producer_edit" th:placeholder="#{placeholder.producer}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{label.model}"></td>
+                            <td><input type="text" id="model_edit" th:placeholder="#{placeholder.model}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{label.price}">Price:</td>
+                            <td><input type="text" id="price_edit" th:placeholder="#{placeholder.price}"></td>
+                        </tr>
+                    </table>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{form.edit.close}"></button>
+                <button type="button" class="btn btn-primary" id="submit_edit" th:text="#{form.edit.submit}"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>`
 <script type = "text/javascript">
-    function addNewSmartPhone(){
-        //lấy dữ liệu
-        let producer = $('#producer').val();
-        let model = $('#model').val();
-        let price = $('#price').val();
-        let newSmartphone = {
-            producer: producer,
-            model: model,
-            price: price
-        }
-        //gọi ajax
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(newSmartphone),
-            //tên API
-            url: "/smartphones",
-            //xử lý khi thành công
-            success: successHandler
-        });
-        //chặn sự kiện mặc định của thẻ
-        event.preventDefault();
-    }
 
 
-    function searchByProducer(){
-        let searchWord = document.getElementById("search").value;
-        $.ajax({
-            //tên phương thức
-            type: "GET",
-            //tên API
-            url: `/smartphones?search=${searchWord}`,
-            success: function (data) {
-                // hiển thị danh sách ở đây
-                let content = '    <tr>\n' +
-                    '        <th>Producer</th>\n' +
-                    '        <th>Model</th>\n' +
-                    '        <th>Price</th>\n' +
-                    '        <th>Edit</th>\n' +
-                    '        <th>Delete</th>\n' +
-                    '    </tr>';
-                for (let i = 0; i < data.length; i++) {
-                    content += getSmartphone(data[i])
-                }
-                document.getElementById('smartphoneList').innerHTML = content;
-            }
-        });
-        event.preventDefault();
-    }
-
-
-    function successHandler() {
-        $.ajax({
-            type: "GET",
-            //tên API
-            url: `/smartphones`,
-            //xử lý khi thành công
-            success: function (data) {
-                // hiển thị danh sách ở đây
-                let content = '    <tr>\n' +
-                    '        <th>Producer</th>\n' +
-                    '        <th>Model</th>\n' +
-                    '        <th>Price</th>\n' +
-                    '        <th>Edit</th>\n' +
-                    '        <th>Delete</th>\n' +
-                    '    </tr>';
-                for (let i = 0; i < data.length; i++) {
-                    content += getSmartphone(data[i])
-                }
-                document.getElementById('smartphoneList').innerHTML = content;
-            }
-        });
-    }
-
-
-    function getSmartphone(smartphone) {
-        return `<tr><td >${smartphone.producer}</td><td >${smartphone.model}</td><td >${smartphone.price}</td>` +
-            `<td><a class="editSmartphone" href="${smartphone.id}">Edit</a></td>` +
-            `<td><a class="deleteSmartphone" href="${smartphone.id}">Delete</a></td></tr>`;
-    }
-
-
+//delete
     $(document).ready(function () {
-        //sư kiện nào thực hiện Ajax
         $('.deleteSmartphone').click(function (event) {
             //lấy dữ liệu
             let a = $(this);
@@ -162,12 +142,158 @@
                 success: function (data) {
                     a.parent().parent().remove();
                 }
-
             });
             //chặn sự kiện mặc định của thẻ
             event.preventDefault();
         });
+    });
+
+
+// search
+    $(document).ready(function() {
+        $('#search_form').click(
+            successHandler
+        );
+    });
+
+//render view
+    function successHandler() {
+        $('#createModal').modal('hide');
+        $('#editModal').modal('hide');
+
+        let searchWord = $('#search_word').val();
+
+        $.ajax({
+
+            type: "GET",
+            //tên API
+            url: "/smartphones?search="+searchWord,
+            //xử lý khi thành công
+            success: function (data) {
+                // hiển thị danh sách ở đây
+                let content = '    <tr>\n' +
+                    '        <th>Producer</th>\n' +
+                    '        <th>Model</th>\n' +
+                    '        <th>Price</th>\n' +
+                    '        <th>Edit</th>\n' +
+                    '        <th>Delete</th>\n' +
+                    '    </tr>';
+                for (let i = 0; i < data.length; i++) {
+                    content += getSmartphone(data[i])
+                }
+                document.getElementById('smartphoneList').innerHTML = content;
+                $(document).ready(function () {
+                    $('.deleteSmartphone').click(function (event) {
+                        //lấy dữ liệu
+                        let a = $(this);
+                        let smartphoneId = a.attr("href");
+                        // gọi ajax
+                        $.ajax({
+                            type: "DELETE",
+                            //tên API
+                            url: `/smartphones/${smartphoneId}`,
+                            //xử lý khi thành công
+                            success: function (data) {
+                                a.parent().parent().remove();
+                            }
+                        });
+                        //chặn sự kiện mặc định của thẻ
+                        event.preventDefault();
+                    });
+                });
+            }
+        });
+    }
+
+
+    function getSmartphone(smartphone) {
+        return `<tr><td >${smartphone.producer}</td><td >${smartphone.model}</td><td >${smartphone.price}</td>` +
+            `<td>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+                         data-smartphone-id="${smartphone.id}">
+                    Edit
+                </button>
+            </td>` +
+            `<td><a class="deleteSmartphone btn btn-danger"  href="${smartphone.id}">Delete</a></td></tr>`;
+    }
+
+
+//edit
+    $(document).ready(function () {
+        $('#editModal').on('show.bs.modal', function (e) {
+            let currentId = $(e.relatedTarget).data('smartphone-id');
+            $.ajax({
+                type: "GET",
+                url: "/smartphones/"+currentId,
+                success: function(data){
+                    $('#id_edit').val(currentId);
+                    $('#producer_edit').val(data.producer);
+                    $('#model_edit').val(data.model);
+                    $('#price_edit').val(data.price);
+
+                    $('#submit_edit').click(function (event) {
+                        let id = $('#id_edit').val();
+                        let producer = $('#producer_edit').val();
+                        let model = $('#model_edit').val();
+                        let price = $('#price_edit').val();
+                        let editSmartphone = {
+                            id: id,
+                            producer: producer,
+                            model: model,
+                            price: price
+                        }
+                        $.ajax({
+                            headers:{
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            type: "PUT",
+                            data: JSON.stringify(editSmartphone),
+                            url: "/smartphones/"+id,
+                            success: successHandler
+                        });
+                        event.preventDefault();
+                    });
+                }
+            })
+        });
     })
+
+
+
+    //create
+    $(document).ready(function(){
+        $('#createModal').on('show.bs.modal', function (e) {
+            $('#search_word').val("");
+
+            $('#producer').val("");
+            $('#model').val("");
+            $('#price').val("");
+
+            $('#create_button').click(function (event) {
+                let producer = $('#producer').val();
+                let model = $('#model').val();
+                let price = $('#price').val();
+                let newSmartphone = {
+                    producer: producer,
+                    model: model,
+                    price: price
+                }
+
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST",
+                    data: JSON.stringify(newSmartphone),
+                    url: "/smartphones",
+                    success: successHandler
+                });
+                event.preventDefault();
+            });
+        });
+    });
 
 </script>
 
